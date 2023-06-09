@@ -6,7 +6,7 @@ from .forms import CustomUserCreationForm, ProfileUpdateForm
 from django.shortcuts import render, redirect
 from obiettivi.models import GoalModel
 
-#TODO AGGIUNGERE L'ELIMINAZIONE DELLA FOTO PROFILO PRECEDENTE QUANDO SI CARICA UNA NUOVA FOTO!
+
 @login_required
 def profile_view(request):
     goals_completed = GoalModel.objects.filter(utente=request.user, is_completed=True)
