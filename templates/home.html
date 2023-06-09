@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<style>
+  #Grafic {
+    width: 100%; /* Imposta la larghezza al 100% per adattarsi al contenitore genitore */
+    height: 400px; /* Imposta l'height desiderata del grafico */
+  }
+
+  /* Regole CSS per adattare il grafico a diverse dimensioni dello schermo */
+  @media screen and (max-width: 768px) {
+    /* Stili per schermi più piccoli di 768px */
+    #Grafic {
+      height: 300px; /* Riduci l'height del grafico per adattarsi a schermi più piccoli */
+    }
+  }
+  .chart-container{
+    display:inline-block;
+    background-color:#afafe7;
+    border-radius:8px;
+    z-index:1;
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:90px;
+    padding-bottom:90px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  }
+
+#block{
+  display:flex ;
+  flex-direction:row;
+  justify-content:space-evenly;
+  }
+
+  .view{
+    padding:10px;
+  }
+
+
+
+
+  #gf{
+    display:inline-block;
+    width:100%;
+    background-color:#ccccee;
+  }
+
+  @media screen and (max-width: 1200px) {
+    #block{
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+      justify-content:center;
+      align-items:center;
+    }
+
+  }
+</style>
+
+  {% if user.is_authenticated %}
+    <div style="background-color:#ccccee">
+    <!--<div  style="display:flex;flex-direction:row;justify-content:center;">
+       <p class="view"><a class="btn btn-primary btn-lg" href="{% url 'workout_list' %}" role="button">View all workouts</a></p>
+       <p class="view"> <a class="btn btn-primary btn-lg" href="{% url 'listaobiettivi' %}" role="button"> View all goals</a></p>
+    </div>-->
+    <br>
+    <br>
+      <div style="background-color:#afafe7; font-size:30px; justify-content:center; margin-left:50px;margin-right:50px;border:3px solid black; padding:10px;border-radius:8px">
+      <p> Hi {{user.username}}!</p>
+      <p>This is your diary! You can save and observe your workouts. Also you can setting up a goal with a specific amount of calories to burn.</p>
+      <p> Use the menu on the top right to view your options and start training!</p>
+    </div>
+    <br>
+    <br>
+    <div style="display:flex;flex-direction:column;">
+    <div id="block">
+      <div>
+        <h1 class="text-center">Workout Types</h1>
+        <div class="chart-container">
+      <canvas id="workoutChart" width="400" height="400"></canvas>
+    </div>
+        <div style="justify-content:center;height:107px; box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;display: flex; flex-direction: column; align-items: center;background-color:#afafe7; margin-top:10px; padding:3px; border-radius:8px;">
+        <a class="btn btn-primary" style href="{% url 'workouts' %}">Add a Workout!</a>
+        </div>
+      </div>
+      <div >
+        <h1 class="text-center" >Goal Achivement </h1>
+        <div class="chart-container">
+          <canvas id="AchivementChart" width="400" height="400">
+          </canvas>
+        </div>
+        <div style=" box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;display: flex; flex-direction: column; align-items: center;background-color:#afafe7; margin-top:10px; padding:3px; border-radius:8px;">
+        {% if remaining == 0 %}
+          <p style="font-size:30px;"> You don't have any goals </p>
+        <div style="display:flex; justify-context:center;">
+          <a  style=" margin-bottom:5px;" class="btn btn-primary" href="{% url 'create_goal' %}">Create a new Goal!</a>
+        </div>
+        {% else %}
+           {% if is_completed %}
+           <p style="font-size:30px;">Completed!</p>
+           <a class="btn btn-primary" href="{% url 'listaobiettivi' %}"> Choose another goal! </a>
+           {% else %}
+            <p style="font-size:30px;">In Progress... </p>
+            <p>Deadline: {{ deadline }}</p>
+            <p>Goal: {{ cal_goal }} Cal </p>
+           {% endif %}
+          {% endif %}
+        </div>
+      </div>
+
+      <div>
+        <h1 class="text-center">Goals Completed </h1>
+        <div class="chart-container">
+          <canvas id="CompletedChart" width="400" height="400"></canvas>
+        </div>
+         <div class=" text-center" style="height:107px; box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;display: flex; flex-direction: column; align-items: center;background-color:#afafe7; margin-top:10px; padding:3px; border-radius:8px;">
+         {% if all_goals == completed %}
+            <p style="font-size:30px;"> Congratulation! </p>
+            <p style="font-size:19px;"> You have completed all your goals! </p>
+         {% else %}
+           <p style="font-size:30px;">You still have {{remaining}} goals</p>
+         {% endif %}
+
+         </div>
+    </div>
+
+    </div>
+  <div style="border-bottom:1px solid black; margin:20px"></div>
+
+    <div id="gf">
+      <h1 class="text-center" style="padding:20px">Workout Frequency</h1>
+      <div id="Grafic" style="height:400px;width:100%"></div>
+    </div>
+    </div>
+    </div>
+
+{% else %}
+
+  <div >
+    <div class="text-center">
+      <h1>Welcome to Your Training Diary!</h1>
+      <p>Get ready to track your progress and achieve your fitness goals.</p>
+    </div>
+  </div>
+
+{% endif %}
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Recupera i dati delle WORKOUT_TYPES dal contesto del template
+      var workoutTypesData = [
+        {% for w in workout_types %}
+          { label: "{{ w.0 }}", count: {{ w.1 }} },
+        {% endfor %}
+      ];
+
+      // Crea un array di etichette e un array di valori per il grafico
+      var labels = workoutTypesData.map(function(item) {
+        return item.label;
+      });
+      var counts = workoutTypesData.map(function(item) {
+        return item.count;
+      });
+
+      // Crea il grafico utilizzando Chart.js
+      var ctx = document.getElementById("workoutChart").getContext("2d");
+      var chart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: labels,
+          datasets: [{
+            data: counts,
+            backgroundColor: ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0"],
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var burned = {{ cal_burned }};
+      var goal = {{ cal_goal }};
+      var progress = (burned / goal) * 100;
+      var remaining = 100 - progress;
+      var ctx = document.getElementById("AchivementChart").getContext("2d");
+      var AchivementChart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: ["Progress", "Remaining"],
+          datasets: [{
+            data: [progress, remaining],
+            backgroundColor: ["#358d40", "#fd4848"],
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+
+
+
+    });
+  </script>
+
+ <script>
+   document.addEventListener("DOMContentLoaded",function(){
+     var completed = {{ completed }};
+     var remaining = {{ remaining }};
+        var ctx = document.getElementById("CompletedChart").getContext("2d");
+        var CompletedChart = new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels: ["Completed", "Remaining"],
+            datasets: [{
+              data: [completed, remaining],
+              backgroundColor: ["#358d40", "#ffc729"],
+            }],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+          },
+        });
+
+
+   })
+ </script>
+
+
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    window.onresize = function() {
+    drawChart(); // Richiama la funzione drawChart() per disegnare nuovamente il grafico con le nuove dimensioni
+    };
+
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    // Recupera i dati delle date e dei conteggi dal contesto del template
+    var dates = {{ dates|safe }};
+    var counts = {{ counts|safe }};
+
+    // Crea un array di dati nel formato richiesto da Google Charts
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'Date');
+    data.addColumn('number', 'Workouts');
+
+    for (var i = 0; i < dates.length; i++) {
+      var dateParts = dates[i].split('-');
+      data.addRow([new Date(dateParts[0], dateParts[1] - 1, dateParts[2]), counts[i]]);
+    }
+
+    // Crea le opzioni per il grafico
+    var options = {
+      legend: { position: 'none' },
+      bars: 'vertical', // Imposta il tipo di grafico a colonne
+      vAxis: {
+        title: 'Workouts',
+        minValue: 0
+      },bar: { groupWidth: '20%' },
+      colors: [ '#36a2eb', '#ffce56', '#4bc0c0','#ff6384'],
+      hAxis: {
+    spacingBetween: 0// Imposta lo spazio tra le colonne
+  },
+      responsive: true,
+
+    };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('Grafic'));
+    chart.draw(data, options);
+  }
+</script>
+
+
+{% endblock content %}
+
+
+
+
+
+

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Workout List{% endblock title %}
+
+{% block content %}
+
+  <h1>
+    Workout List
+    <a href="{% url 'workouts' %}" class="btn btn-primary"> + </a>
+  </h1>
+ <div class="table-responsive" >
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Workout Type</th>
+        <th>Description</th>
+        <th>Calories Burned</th>
+        <th>Weight</th>
+        <th>Repetitions</th>
+        <th>Distance</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for workout in workouts %}
+        <tr>
+          <td>{{ workout.date }}</td>
+          <td>{{ workout.workout_type }}</td>
+          <td>{{ workout.description }}</td>
+          <td>{{ workout.calories_burned }}</td>
+          <td>{{ workout.weight }}</td>
+          <td>{{ workout.repetitions }}</td>
+          <td>{{ workout.distance }}</td>
+          <td>
+            <form action="{% url 'delete' workout.pk %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </td>
+          <td>
+            <form action="{% url 'update' workout.pk %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary btn-sm">Update</button>
+            </form>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="8">No workouts found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+
+{% endblock content %}
