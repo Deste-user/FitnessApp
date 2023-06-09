@@ -27,7 +27,7 @@ def update_goal_selection(request):
         selected_goal_id = request.POST.get('selected_goal')
         if selected_goal_id:
             GoalModel.objects.all().update(is_selected=False)
-            goal = GoalModel.objects.get(id=selected_goal_id)
+            goal = GoalModel.objects.get(pk=selected_goal_id)
             if goal.is_selected:
                 goal.is_selected = False
             else:
