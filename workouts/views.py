@@ -9,7 +9,7 @@ from .models import Workout
 from obiettivi.models import GoalModel
 
 
-class CreateWorkoutsView(FormView, LoginRequiredMixin):
+class CreateWorkoutsView(LoginRequiredMixin, FormView):
     template_name = 'add_workout.html'
     form_class = WorkoutForm
     success_url = reverse_lazy('workout_list')
@@ -23,18 +23,18 @@ class CreateWorkoutsView(FormView, LoginRequiredMixin):
             obiettivo_principale = None
 
         if obiettivo_principale is not None:
-            if not obiettivo_principale.is_deadline_expired():
-                if not obiettivo_principale.is_completed:
-                    obiettivo_principale.cal += form.instance.calories_burned
-                    form.instance.goal = obiettivo_principale
-                    if obiettivo_principale.cal >= obiettivo_principale.CaloriesGoal:
-                        obiettivo_principale.cal = obiettivo_principale.CaloriesGoal
-                        obiettivo_principale.is_completed = True
-                    obiettivo_principale.save()
-            else:
-                obiettivo_principale.is_selected = False
+          if not obiettivo_principale.is_deadline_expired():
+            if not obiettivo_principale.is_completed:
+                obiettivo_principale.cal += form.instance.calories_burned
+                form.instance.goal= obiettivo_principale
+                if obiettivo_principale.cal >= obiettivo_principale.CaloriesGoal:
+                    obiettivo_principale.cal = obiettivo_principale.CaloriesGoal
+                    obiettivo_principale.is_completed = True
                 obiettivo_principale.save()
-        # Ho aggiunto questo if all'inizio per evitare che l'utente possa aggiungere un workout ad un obiettivo scaduto!
+          else:
+              obiettivo_principale.is_selected = False
+              obiettivo_principale.save()
+        #Ho aggiunto questo if all'inizio per evitare che l'utente possa aggiungere un workout ad un obiettivo scaduto!
         form.save()
         return super().form_valid(form)
 
@@ -45,6 +45,7 @@ class CreateWorkoutsView(FormView, LoginRequiredMixin):
             obiettivo_principale = None
 
         return super().get(request, *args, **kwargs)
+
 
 
 @login_required
@@ -58,13 +59,13 @@ class WorkoutsView(FormView):
     form_class = WorkoutForm
 
 
-class WorkoutsDeleteView(DeleteView):
+class WorkoutsDeleteView(LoginRequiredMixin,DeleteView):
     model = Workout
     template_name = 'workouts_delete.html'
     success_url = reverse_lazy('workout_list')
 
 
-class WorkoutsUpdateView(UpdateView, LoginRequiredMixin):
+class WorkoutsUpdateView(LoginRequiredMixin, UpdateView):
     model = Workout
     form_class = WorkoutForm
     template_name = 'update_workout.html'
