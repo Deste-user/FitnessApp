@@ -19,7 +19,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://fitnessapp-production.up.railway.app',
+    'https://fitnessapp-nko1.onrender.com/',
 ]
 
 
@@ -117,6 +117,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

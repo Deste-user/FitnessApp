@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail.backends import console
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -10,6 +11,7 @@ from .models import GoalModel
 
 from django.shortcuts import redirect
 
+@login_required
 def delete_goal(request, pk):
     goal = GoalModel.objects.get(pk=pk)
 
@@ -21,7 +23,7 @@ def delete_goal(request, pk):
 
     return redirect('listaobiettivi')
 
-
+@login_required
 def update_goal_selection(request):
     if request.method == 'POST':
         selected_goal_id = request.POST.get('selected_goal')
@@ -37,7 +39,7 @@ def update_goal_selection(request):
 
     return redirect('homeview')
 
-class CreateGoalView(CreateView):
+class CreateGoalView(CreateView,LoginRequiredMixin):
     template_name = 'create_goal.html'
     form_class = GoalForm
     success_url = reverse_lazy('listaobiettivi')
@@ -65,7 +67,7 @@ def listaobiettivi(request):
             return redirect('listaobiettivi')
     return render(request, 'goals.html', {'goals': goals})
 
-class UpdateGoalView(UpdateView):
+class UpdateGoalView(UpdateView,LoginRequiredMixin):
     model = GoalModel
     fields = ('goal_type', 'descrizione', 'tempistica', 'CaloriesGoal')
     template_name = 'update_goal.html'
