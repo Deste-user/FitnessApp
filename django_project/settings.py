@@ -1,5 +1,4 @@
 
-
 from pathlib import Path
 import os
 
@@ -14,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-iaq3288xavwo9l4%i59f5eld(=p1ret((&0-9m+(*2@4&jo-n!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -112,11 +111,17 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATIC_URL = 'static/'
-MEDIA_URL = 'media/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATIC_URL = '/static/'
+if DEBUG:
+  STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+else:
+  STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
 
 
 
@@ -126,5 +131,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-AUTH_USER_MODEL= "users.CustomUser"
+AUTH_USER_MODE L= "users.CustomUser"
 LOGIN_REDIRECT_URL = "homeview"

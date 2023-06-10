@@ -74,9 +74,9 @@
 
   <div class="profile-picture-container">
    {% if user.profile_pic %}
-    <img class=" profile-picture" style="border:3px solid black" src="{{user.profile_pic.url}}">
+    <img class="profile-picture" style="border:3px solid black" src="{{user.profile_pic.url}}">
    {% else %}
-      <img class=" profile-picture" style="border:3px solid black" src="{% static 'images/user_default.jpeg'%}">
+      <img class="profile-picture" style="border:3px solid black" src="{% static 'images/user_default.jpeg'%}">
   {% endif %}
       <div class="text-center">
    <a href="{% url 'users:updateprofile' %}" class="btn btn-primary">Edit Profile</a>
