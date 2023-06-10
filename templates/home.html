@@ -27,6 +27,11 @@
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
   }
 
+  .chart-container:hover{
+    transform:scale(1.03);
+    transition:0.5s;
+  }
+
 #block{
   display:flex ;
   flex-direction:row;
@@ -73,19 +78,23 @@
     <div id="block">
       <div>
         <h1 class="text-center">Workout Types</h1>
+        <a href="{% url 'workout_list' %}">
         <div class="chart-container">
       <canvas id="workoutChart" width="400" height="400"></canvas>
     </div>
+        </a>
         <div style="justify-content:center;height:107px; box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;display: flex; flex-direction: column; align-items: center;background-color:#afafe7; margin-top:10px; padding:3px; border-radius:8px;">
         <a class="btn btn-primary" style href="{% url 'workouts' %}">Add a Workout!</a>
         </div>
       </div>
       <div >
         <h1 class="text-center" >Goal Achivement </h1>
+        <a href="{% url 'users:profile' %}">
         <div class="chart-container">
           <canvas id="AchivementChart" width="400" height="400">
           </canvas>
-        </div>
+        </div></a>
+
         <div style=" box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;display: flex; flex-direction: column; align-items: center;background-color:#afafe7; margin-top:10px; padding:3px; border-radius:8px;">
         {% if remaining == 0 %}
           <p style="font-size:30px;"> You don't have any goals </p>
@@ -107,9 +116,10 @@
 
       <div>
         <h1 class="text-center">Goals Completed </h1>
+        <a href="{% url 'listaobiettivi' %}">
         <div class="chart-container">
           <canvas id="CompletedChart" width="400" height="400"></canvas>
-        </div>
+        </div></a>
          <div class=" text-center" style="height:107px; box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;display: flex; flex-direction: column; align-items: center;background-color:#afafe7; margin-top:10px; padding:3px; border-radius:8px;">
          {% if all_goals == completed %}
             <p style="font-size:30px;"> Congratulation! </p>
@@ -130,6 +140,13 @@
     </div>
     </div>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
+<div class="container-fluid bg-dark text-white text-center p-3">
+            <p>© 2023 FitnessAppTracking</p>
+        </div>
 
 {% else %}
 

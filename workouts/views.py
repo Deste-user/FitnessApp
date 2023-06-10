@@ -64,6 +64,24 @@ class WorkoutsDeleteView(LoginRequiredMixin,DeleteView):
     template_name = 'workouts_delete.html'
     success_url = reverse_lazy('workout_list')
 
+    def form_valid(self, form):
+        elem = self.get_object()
+
+        try:
+            obiettivo_principale = elem.goal
+        except ObjectDoesNotExist:
+               obiettivo_principale = None
+        if obiettivo_principale is not None:
+            if obiettivo_principale.cal <= elem.calories_burned:
+                obiettivo_principale.cal = 0
+            else:
+                obiettivo_principale.cal -= elem.calories_burned
+            obiettivo_principale.save()
+        elem.delete()
+        return super().form_valid(form)
+
+
+
 
 class WorkoutsUpdateView(LoginRequiredMixin, UpdateView):
     model = Workout
@@ -76,4 +94,21 @@ class WorkoutsUpdateView(LoginRequiredMixin, UpdateView):
         return obj
 
     def form_valid(self, form):
+        old_workout = self.get_object()
+        new_workout = form.save(commit=False)  # Salva il nuovo Workout ma non lo aggiunge al database ancora
+        old_calories = old_workout.calories_burned  # Ottieni le calorie del vecchio Workout
+
+        try:
+            obiettivo_principale = old_workout.goal
+        except ObjectDoesNotExist:
+            obiettivo_principale = None
+
+        # Sottrai le calorie del vecchio Workout e aggiungi le calorie del nuovo Workout
+        if obiettivo_principale:
+            obiettivo_principale.cal -= old_calories
+            obiettivo_principale.cal += new_workout.calories_burned
+            obiettivo_principale.save()
+
+        new_workout.save()  # Salva il nuovo Workout nel database
+
         return super().form_valid(form)

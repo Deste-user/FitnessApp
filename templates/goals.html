@@ -43,12 +43,12 @@
           <td>{{ goal.deadline }}</td>
           <td>
             {% if goal.is_completed %}
-              <span class="badge bg-success">Completato</span>
+              <span class="badge bg-success">Completed</span>
             {% else %}
              {% if goal.is_deadline_expired %}
-              <span class="badge bg-danger">Scaduto</span>
+              <span class="badge bg-danger">Expired</span>
              {% else %}
-              <span class="badge bg-warning">Da fare</span>
+              <span class="badge bg-warning">In Progress</span>
             {% endif %}
            {% endif %}
           </td>
@@ -64,7 +64,7 @@
             <div style="width: 20px;height: 20px;border-radius: 50%;display: inline-block;background-color: red;"></div>
             {% endif %}
           </td>
-        {% if not goal.is_completed or goal.is_deadline_expired %}
+        {% if not goal.is_completed and not goal.is_deadline_expired %}
          <td >
          <input type="radio" name="selected_goal" value="{{ goal.pk }}" onchange="this.form.submit()"
           {% if goal.is_selected %} checked {% endif %}>
@@ -83,7 +83,7 @@
         </tr>
       {% empty %}
         <tr>
-          <td colspan="10">Nessun goal trovato.</td>
+          <td colspan="10">No goals scored</td>
         </tr>
       {% endfor %}
     </tbody>
