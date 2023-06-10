@@ -11,7 +11,6 @@ from .models import GoalModel
 
 from django.shortcuts import redirect
 
-
 @login_required
 def delete_goal(request, pk):
     goal = GoalModel.objects.get(pk=pk)
@@ -23,7 +22,6 @@ def delete_goal(request, pk):
     goal.delete()
 
     return redirect('listaobiettivi')
-
 
 @login_required
 def update_goal_selection(request):
@@ -41,8 +39,7 @@ def update_goal_selection(request):
 
     return redirect('homeview')
 
-
-class CreateGoalView(CreateView, LoginRequiredMixin):
+class CreateGoalView(CreateView,LoginRequiredMixin):
     template_name = 'create_goal.html'
     form_class = GoalForm
     success_url = reverse_lazy('listaobiettivi')
@@ -66,11 +63,11 @@ def listaobiettivi(request):
             selected_goal.is_selected = True
             selected_goal.save()
 
+
             return redirect('listaobiettivi')
     return render(request, 'goals.html', {'goals': goals})
 
-
-class UpdateGoalView(UpdateView, LoginRequiredMixin):
+class UpdateGoalView(UpdateView,LoginRequiredMixin):
     model = GoalModel
     fields = ('goal_type', 'descrizione', 'tempistica', 'CaloriesGoal')
     template_name = 'update_goal.html'
