@@ -13,12 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-iaq3288xavwo9l4%i59f5eld(=p1ret((&0-9m+(*2@4&jo-n!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
-
-CSRF_TRUSTED_ORIGINS = ['https://web-production-331ec.up.railway.app',]
+CSRF_TRUSTED_ORIGINS = ['https://web-production-331ec.up.railway.app' ,]
 
 
 
@@ -114,7 +112,7 @@ USE_TZ = True
 
 
 
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
@@ -129,9 +127,10 @@ else:
 
 
 
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-AUTH_USER_MODE = "users.CustomUser"
+AUTH_USER_MODEL = "users.CustomUser"
 LOGIN_REDIRECT_URL = "homeview"
