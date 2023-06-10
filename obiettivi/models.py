@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
-from datetime import timedelta, date
+from datetime import  date
 
 
 class GoalModel(models.Model):

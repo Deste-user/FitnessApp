@@ -41,8 +41,8 @@ def update_goal_selection(request):
 
     return redirect('homeview')
 
-
-class CreateGoalView(CreateView, LoginRequiredMixin):
+@login_required
+class CreateGoalView(CreateView):
     template_name = 'create_goal.html'
     form_class = GoalForm
     success_url = reverse_lazy('listaobiettivi')
@@ -69,7 +69,7 @@ def listaobiettivi(request):
             return redirect('listaobiettivi')
     return render(request, 'goals.html', {'goals': goals})
 
-
+@login_required
 class UpdateGoalView(UpdateView, LoginRequiredMixin):
     model = GoalModel
     fields = ('goal_type', 'descrizione', 'tempistica', 'CaloriesGoal')

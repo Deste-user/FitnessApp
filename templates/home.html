@@ -5,15 +5,14 @@
 {% block content %}
 <style>
   #Grafic {
-    width: 100%; /* Imposta la larghezza al 100% per adattarsi al contenitore genitore */
-    height: 400px; /* Imposta l'height desiderata del grafico */
+    width: 100%;
+    height: 400px;
   }
 
-  /* Regole CSS per adattare il grafico a diverse dimensioni dello schermo */
+
   @media screen and (max-width: 768px) {
-    /* Stili per schermi più piccoli di 768px */
     #Grafic {
-      height: 300px; /* Riduci l'height del grafico per adattarsi a schermi più piccoli */
+      height: 300px;
     }
   }
   .chart-container{
@@ -61,10 +60,6 @@
 
   {% if user.is_authenticated %}
     <div style="background-color:#ccccee">
-    <!--<div  style="display:flex;flex-direction:row;justify-content:center;">
-       <p class="view"><a class="btn btn-primary btn-lg" href="{% url 'workout_list' %}" role="button">View all workouts</a></p>
-       <p class="view"> <a class="btn btn-primary btn-lg" href="{% url 'listaobiettivi' %}" role="button"> View all goals</a></p>
-    </div>-->
     <br>
     <br>
       <div style="background-color:#afafe7; font-size:30px; justify-content:center; margin-left:50px;margin-right:50px;border:3px solid black; padding:10px;border-radius:8px">
@@ -152,14 +147,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // Recupera i dati delle WORKOUT_TYPES dal contesto del template
+
       var workoutTypesData = [
         {% for w in workout_types %}
           { label: "{{ w.0 }}", count: {{ w.1 }} },
         {% endfor %}
       ];
 
-      // Crea un array di etichette e un array di valori per il grafico
+
       var labels = workoutTypesData.map(function(item) {
         return item.label;
       });
@@ -243,18 +238,18 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
     window.onresize = function() {
-    drawChart(); // Richiama la funzione drawChart() per disegnare nuovamente il grafico con le nuove dimensioni
+    drawChart();
     };
 
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
-    // Recupera i dati delle date e dei conteggi dal contesto del template
+
     var dates = {{ dates|safe }};
     var counts = {{ counts|safe }};
 
-    // Crea un array di dati nel formato richiesto da Google Charts
+
     var data = new google.visualization.DataTable();
     data.addColumn('date', 'Date');
     data.addColumn('number', 'Workouts');
@@ -264,17 +259,17 @@
       data.addRow([new Date(dateParts[0], dateParts[1] - 1, dateParts[2]), counts[i]]);
     }
 
-    // Crea le opzioni per il grafico
+
     var options = {
       legend: { position: 'none' },
-      bars: 'vertical', // Imposta il tipo di grafico a colonne
+      bars: 'vertical',
       vAxis: {
         title: 'Workouts',
         minValue: 0
       },bar: { groupWidth: '20%' },
       colors: [ '#36a2eb', '#ffce56', '#4bc0c0','#ff6384'],
       hAxis: {
-    spacingBetween: 0// Imposta lo spazio tra le colonne
+    spacingBetween: 0
   },
       responsive: true,
 
