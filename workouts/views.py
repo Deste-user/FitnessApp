@@ -76,6 +76,8 @@ class WorkoutsDeleteView(LoginRequiredMixin,DeleteView):
                 obiettivo_principale.cal = 0
             else:
                 obiettivo_principale.cal -= elem.calories_burned
+            if obiettivo_principale.is_completed and obiettivo_principale.cal < obiettivo_principale.CaloriesGoal:
+                obiettivo_principale.is_completed = False
             obiettivo_principale.save()
         elem.delete()
         return super().form_valid(form)
@@ -107,6 +109,8 @@ class WorkoutsUpdateView(LoginRequiredMixin, UpdateView):
         if obiettivo_principale:
             obiettivo_principale.cal -= old_calories
             obiettivo_principale.cal += new_workout.calories_burned
+            if obiettivo_principale.is_completed and obiettivo_principale.cal < obiettivo_principale.CaloriesGoal:
+                obiettivo_principale.is_completed = False
             obiettivo_principale.save()
 
         new_workout.save()  # Salva il nuovo Workout nel database
