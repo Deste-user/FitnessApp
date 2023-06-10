@@ -1,11 +1,7 @@
 from django.contrib.auth.decorators import login_required
-
 from django.db.models import Count
 from django.shortcuts import render
-from django.views.generic import TemplateView
-
 from workouts.models import Workout
-
 from obiettivi.models import GoalModel
 
 
