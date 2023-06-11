@@ -66,13 +66,19 @@ class WorkoutsDeleteView(LoginRequiredMixin, DeleteView):
 
     def form_valid(self, form):
         elem = self.get_object()
+        calories = elem.calories_burned
 
         try:
             obiettivo_principale = elem.goal
         except ObjectDoesNotExist:
                obiettivo_principale = None
+
         if obiettivo_principale is not None:
-            obiettivo_principale.cal -= elem.calories_burned
+            if obiettivo_principale.cal <= calories:
+                obiettivo_principale.cal = 0
+            else:
+                obiettivo_principale.cal = obiettivo_principale.cal - calories
+
             if obiettivo_principale.is_completed and obiettivo_principale.cal < obiettivo_principale.CaloriesGoal:
                 obiettivo_principale.is_completed = False
 
