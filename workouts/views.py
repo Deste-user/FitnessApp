@@ -59,7 +59,7 @@ class WorkoutsView(FormView):
     form_class = WorkoutForm
 
 
-class WorkoutsDeleteView(LoginRequiredMixin,DeleteView):
+class WorkoutsDeleteView(LoginRequiredMixin, DeleteView):
     model = Workout
     template_name = 'workouts_delete.html'
     success_url = reverse_lazy('workout_list')
@@ -75,7 +75,8 @@ class WorkoutsDeleteView(LoginRequiredMixin,DeleteView):
             obiettivo_principale.cal -= elem.calories_burned
             if obiettivo_principale.is_completed and obiettivo_principale.cal < obiettivo_principale.CaloriesGoal:
                 obiettivo_principale.is_completed = False
-            obiettivo_principale.save()
+
+        obiettivo_principale.save()
         elem.delete()
         return super().form_valid(form)
 
