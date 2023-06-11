@@ -87,8 +87,6 @@ class WorkoutsDeleteView(LoginRequiredMixin, DeleteView):
         return super().form_valid(form)
 
 
-
-
 class WorkoutsUpdateView(LoginRequiredMixin, UpdateView):
     model = Workout
     form_class = WorkoutForm
