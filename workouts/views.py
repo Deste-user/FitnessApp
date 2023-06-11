@@ -72,10 +72,7 @@ class WorkoutsDeleteView(LoginRequiredMixin,DeleteView):
         except ObjectDoesNotExist:
                obiettivo_principale = None
         if obiettivo_principale is not None:
-            if obiettivo_principale.cal <= elem.calories_burned:
-                obiettivo_principale.cal = 0
-            else:
-                obiettivo_principale.cal -= elem.calories_burned
+            obiettivo_principale.cal -= elem.calories_burned
             if obiettivo_principale.is_completed and obiettivo_principale.cal < obiettivo_principale.CaloriesGoal:
                 obiettivo_principale.is_completed = False
             obiettivo_principale.save()
