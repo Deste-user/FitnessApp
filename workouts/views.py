@@ -30,7 +30,6 @@ class CreateWorkoutsView(LoginRequiredMixin, FormView):
                 obiettivo_principale.cal += form.instance.calories_burned
                 form.instance.goal= obiettivo_principale
                 if obiettivo_principale.cal >= obiettivo_principale.CaloriesGoal:
-                    obiettivo_principale.cal = obiettivo_principale.CaloriesGoal
                     obiettivo_principale.is_completed = True
                 obiettivo_principale.save()
           else:
@@ -66,7 +65,7 @@ class WorkoutsDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'workouts_delete.html'
     success_url = reverse_lazy('workout_list')
 
-    def form_valid(self, form):
+    """def form_valid(self, form):
         elem = self.get_object()
         calories = elem.calories_burned
 
@@ -75,7 +74,7 @@ class WorkoutsDeleteView(LoginRequiredMixin, DeleteView):
         except ObjectDoesNotExist:
                obiettivo_principale = None
 
-        if obiettivo_principale:
+        if obiettivo_principale is not None:
             if obiettivo_principale.cal <= calories:
                 obiettivo_principale.cal = 0
             else:
@@ -86,17 +85,24 @@ class WorkoutsDeleteView(LoginRequiredMixin, DeleteView):
 
         obiettivo_principale.save()
         elem.delete()
-        return super().form_valid(form)
+        return super().form_valid(form)"""
 
-    """"@receiver(pre_delete, sender=Workout)
+    @receiver(pre_delete, sender=Workout)
     def remove_calories_burned(sender, instance, **kwargs):
 
         calories_burned = instance.calories_burned
+        istance_goal = instance.goal.cal
 
         
         if instance.goal:
-            instance.goal.cal -= calories_burned
-            instance.goal.save()"""
+            if instance.goal.cal <= calories_burned:
+                instance.goal.cal = 0
+            else:
+                instance.goal.cal -= calories_burned
+            if instance.goal.is_completed and instance.goal.cal < instance.goal.CaloriesGoal:
+                instance.goal.is_completed = False
+
+            instance.goal.save()
 
 
 class WorkoutsUpdateView(LoginRequiredMixin, UpdateView):
