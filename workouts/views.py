@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import FormView, DeleteView, UpdateView
@@ -64,7 +66,7 @@ class WorkoutsDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'workouts_delete.html'
     success_url = reverse_lazy('workout_list')
 
-    def form_valid(self, form):
+    """def form_valid(self, form):
         elem = self.get_object()
         calories = elem.calories_burned
 
@@ -74,13 +76,27 @@ class WorkoutsDeleteView(LoginRequiredMixin, DeleteView):
                obiettivo_principale = None
 
         if obiettivo_principale is not None:
-            obiettivo_principale.cal=1000
+            if obiettivo_principale.cal <= calories:
+                obiettivo_principale.cal = 0
+            else:
+                obiettivo_principale.cal = obiettivo_principale.cal - calories
+
             if obiettivo_principale.is_completed and obiettivo_principale.cal < obiettivo_principale.CaloriesGoal:
                 obiettivo_principale.is_completed = False
 
         obiettivo_principale.save()
         elem.delete()
-        return super().form_valid(form)
+        return super().form_valid(form)"""
+
+    @receiver(pre_delete, sender=Workout)
+    def remove_calories_burned(sender, instance, **kwargs):
+        # Memorizza il valore delle calorie bruciate
+        calories_burned = instance.calories_burned
+
+        # Rimuovi le calorie bruciate dal campo goal.cal
+        if instance.goal:
+            instance.goal.cal -= calories_burned
+            instance.goal.save()
 
 
 class WorkoutsUpdateView(LoginRequiredMixin, UpdateView):
