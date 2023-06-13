@@ -29,14 +29,16 @@ def home(request):
     # Converti le date in stringhe nel formato 'yyyy-mm-dd'
     dates = [entry['date'].strftime('%Y-%m-%d') for entry in workout_counts]
     completed = GoalModel.objects.filter(utente=user,is_completed=True).count()
-    to_complete = GoalModel.objects.filter(utente=user,is_completed=False).count()
+    to_complete = GoalModel.objects.filter(utente=user,is_completed=False,is_expired=False).count()
+    expired = GoalModel.objects.filter(utente=user,is_expired=True).count()
     all_goals = GoalModel.objects.filter(utente=user).count()
+
 
     goal = GoalModel.objects.filter(utente=user, is_selected=True).first()
     if goal is not None:
         cal_burned = goal.cal
         cal_goal = goal.CaloriesGoal
         deadline = goal.deadline
-        return render(request, 'home.html', {'workout_types': workout_types, 'dates': dates, 'counts': counts,'cal_burned':cal_burned,'cal_goal':cal_goal,'is_completed':goal.is_completed,'completed':completed,'remaining':to_complete ,'deadline':deadline,'all_goals':all_goals})
+        return render(request, 'home.html', {'workout_types': workout_types, 'dates': dates, 'counts': counts,'cal_burned':cal_burned,'cal_goal':cal_goal,'is_completed':goal.is_completed,'completed':completed,'remaining':to_complete ,'deadline':deadline,'all_goals':all_goals,'expired':expired})
     else:
         return render(request, 'home.html', {'workout_types': workout_types, 'dates': dates, 'counts': counts,'completed':completed,'remaining':to_complete,'all_goals':all_goals })

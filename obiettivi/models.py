@@ -33,8 +33,12 @@ class GoalModel(models.Model):
     def is_deadline_expired(self):
         today = date.today()
         if self.deadline < today:
+            self.is_expired = True
+            self.save()
             return True
         else:
+            self.is_expired = False
+            self.save()
             return False
 
     deadline = models.DateField(blank=True, null=True)
@@ -47,4 +51,5 @@ class GoalModel(models.Model):
     CaloriesGoal = models.IntegerField(default=0, blank=False, null=False)
     is_selected = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)
+    is_expired = models.BooleanField(default=False)
     cal = models.IntegerField(default=0)

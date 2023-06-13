@@ -229,14 +229,15 @@
    document.addEventListener("DOMContentLoaded",function(){
      var completed = {{ completed }};
      var remaining = {{ remaining }};
+     var expired = {{ expired }};
         var ctx = document.getElementById("CompletedChart").getContext("2d");
         var CompletedChart = new Chart(ctx, {
           type: "doughnut",
           data: {
-            labels: ["Completed", "Remaining"],
+            labels: ["Completed", "Remaining","Expired"],
             datasets: [{
-              data: [completed, remaining],
-              backgroundColor: ["#358d40", "#ffc729"],
+              data: [completed, remaining, expired],
+              backgroundColor: ["#358d40", "#ffc729", "#fd4848"],
             }],
           },
           options: {
