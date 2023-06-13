@@ -203,6 +203,9 @@
       var burned = {{ cal_burned }};
       var goal = {{ cal_goal }};
       var progress = (burned / goal) * 100;
+      if (progress > 100) {
+        progress = 100;
+      }
       var remaining = 100 - progress;
       var ctx = document.getElementById("AchivementChart").getContext("2d");
       var AchivementChart = new Chart(ctx, {
