@@ -74,11 +74,7 @@ class WorkoutsDeleteView(LoginRequiredMixin, DeleteView):
                obiettivo_principale = None
 
         if obiettivo_principale is not None:
-            if obiettivo_principale.cal <= calories:
-                obiettivo_principale.cal = 0
-            else:
-                obiettivo_principale.cal = obiettivo_principale.cal - calories
-
+            obiettivo_principale.cal=1000
             if obiettivo_principale.is_completed and obiettivo_principale.cal < obiettivo_principale.CaloriesGoal:
                 obiettivo_principale.is_completed = False
 
