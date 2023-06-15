@@ -32,9 +32,7 @@ class CreateWorkoutsView(LoginRequiredMixin, FormView):
                 if obiettivo_principale.cal >= obiettivo_principale.CaloriesGoal:
                     obiettivo_principale.is_completed = True
                 obiettivo_principale.save()
-          else:
-              obiettivo_principale.is_selected = False
-              obiettivo_principale.save()
+
         #Ho aggiunto questo if all'inizio per evitare che l'utente possa aggiungere un workout ad un obiettivo scaduto!
         form.save()
         return super().form_valid(form)

@@ -63,8 +63,8 @@
   }
 </style>
 
-  {% if user.is_authenticated %}
-    <div style="background-color:#ccccee">
+{% if user.is_authenticated %}
+<div style="background-color:#ccccee">
     <br>
     <br>
       <div style="background-color:#afafe7; font-size:30px; justify-content:center; margin-left:50px;margin-right:50px;border:3px solid black; padding:10px;border-radius:8px">
@@ -96,6 +96,10 @@
         </div></a>
 
         <div style=" box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;display: flex; flex-direction: column; align-items: center;background-color:#afafe7; margin-top:10px; padding:3px; border-radius:8px;">
+      {% if selected_goal.is_deadline_expired and not selected_goal.is_completed %}
+        <p style="font-size:30px;">Deadline Expired!</p>
+        <a class="btn btn-danger" href="{% url 'listaobiettivi' %}"> Choose another goal! </a>
+      {% else %}
         {% if remaining == 0 %}
           <p style="font-size:30px;"> You don't have any goals </p>
         <div style="display:flex; justify-context:center;">
@@ -107,9 +111,11 @@
            <a class="btn btn-primary" href="{% url 'listaobiettivi' %}"> Choose another goal! </a>
            {% else %}
             <p style="font-size:30px;">In Progress... </p>
+            <p>Days: {{remain_days }}</p>
             <p>Deadline: {{ deadline }}</p>
             <p>Goal: {{ cal_goal }} Cal </p>
            {% endif %}
+          {% endif %}
           {% endif %}
         </div>
       </div>
@@ -126,6 +132,7 @@
             <p style="font-size:19px;"> You have completed all your goals! </p>
          {% else %}
            <p style="font-size:30px;">You still have {{remaining}} goals</p>
+           <p style="font-size:30px;">to complete!</p>
          {% endif %}
 
          </div>
@@ -150,7 +157,7 @@
 
 {% else %}
 
-  <div >
+  <div>
     <div class="text-center">
       <h1>Welcome to Your Training Diary!</h1>
       <p>Get ready to track your progress and achieve your fitness goals.</p>

@@ -34,11 +34,13 @@ def home(request):
     all_goals = GoalModel.objects.filter(utente=user).count()
 
 
+
     goal = GoalModel.objects.filter(utente=user, is_selected=True).first()
     if goal is not None:
         cal_burned = goal.cal
         cal_goal = goal.CaloriesGoal
         deadline = goal.deadline
-        return render(request, 'home.html', {'workout_types': workout_types, 'dates': dates, 'counts': counts,'cal_burned':cal_burned,'cal_goal':cal_goal,'is_completed':goal.is_completed,'completed':completed,'remaining':to_complete ,'deadline':deadline,'all_goals':all_goals,'expired':expired})
+        days = (deadline - goal.data_creazione).days
+        return render(request, 'home.html', {'remain_days':days,'selected_goal':goal,'workout_types': workout_types, 'dates': dates, 'counts': counts,'cal_burned':cal_burned,'cal_goal':cal_goal,'is_completed':goal.is_completed,'completed':completed,'remaining':to_complete ,'deadline':deadline,'all_goals':all_goals,'expired':expired})
     else:
         return render(request, 'home.html', {'workout_types': workout_types, 'dates': dates, 'counts': counts,'completed':completed,'remaining':to_complete,'all_goals':all_goals })
