@@ -91,7 +91,10 @@ class WorkoutsDeleteView(LoginRequiredMixin, DeleteView):
     def remove_calories_burned(sender, instance, **kwargs):
 
         calories_burned = instance.calories_burned
-        istance_goal = instance.goal.cal
+        try:
+            istance_goal = instance.goal.cal
+        except ObjectDoesNotExist:
+            istance_goal = None
 
         
         if instance.goal:
