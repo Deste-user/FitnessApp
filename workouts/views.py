@@ -92,7 +92,7 @@ class WorkoutsDeleteView(LoginRequiredMixin, DeleteView):
 
         calories_burned = instance.calories_burned
         try:
-            istance_goal = instance.goal.cal
+            istance_goal = instance.goal
         except ObjectDoesNotExist:
             istance_goal = None
 
