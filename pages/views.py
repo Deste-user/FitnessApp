@@ -7,7 +7,6 @@ from obiettivi.models import GoalModel
 
 @login_required
 def home(request):
-    # Recupera il conteggio delle WORKOUT_TYPES dal modello
     user = request.user
     workout_types = []
 
@@ -26,7 +25,7 @@ def home(request):
     )
 
     counts = [entry['count'] for entry in workout_counts]
-    # Converti le date in stringhe nel formato 'yyyy-mm-dd'
+
     dates = [entry['date'].strftime('%Y-%m-%d') for entry in workout_counts]
     completed = GoalModel.objects.filter(utente=user,is_completed=True).count()
     to_complete = GoalModel.objects.filter(utente=user,is_completed=False,is_expired=False).count()

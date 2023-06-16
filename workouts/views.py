@@ -118,15 +118,15 @@ class WorkoutsUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         old_workout = self.get_object()
-        new_workout = form.save(commit=False)  # Salva il nuovo Workout ma non lo aggiunge al database ancora
-        old_calories = old_workout.calories_burned  # Ottieni le calorie del vecchio Workout
+        new_workout = form.save(commit=False)  # Salva il nuovo Workout ma non lo aggiungo al database ancora
+        old_calories = old_workout.calories_burned  # Ottengo le calorie del vecchio Workout
 
         try:
             obiettivo_principale = old_workout.goal
         except ObjectDoesNotExist:
             obiettivo_principale = None
 
-        # Sottrai le calorie del vecchio Workout e aggiungi le calorie del nuovo Workout
+        # Sottraggo le calorie del vecchio Workout e aggiungo le calorie del nuovo Workout
         if obiettivo_principale:
             if obiettivo_principale.cal <= old_calories:
                 obiettivo_principale.cal = 0
@@ -137,6 +137,6 @@ class WorkoutsUpdateView(LoginRequiredMixin, UpdateView):
                 obiettivo_principale.is_completed = False
             obiettivo_principale.save()
 
-        new_workout.save()  # Salva il nuovo Workout nel database
+        new_workout.save()
 
         return super().form_valid(form)

@@ -36,7 +36,6 @@
 
 <script>
 $(document).ready(function() {
-  // Nascondi i campi inizialmente
   $("#id_distance").closest(".form-group").hide();
   $("#id_repetitions").closest(".form-group").hide();
   $("#id_weight").closest(".form-group").hide();
@@ -45,7 +44,7 @@ $(document).ready(function() {
   var initial_option= $("#id_workout_type").val();
 
 
-  // Mostra/nascondi i campi in base al valore di workout_type
+
   $("#id_workout_type").change(function() {
     var workoutType = $(this).val();
     if (workoutType === "pesi") {
