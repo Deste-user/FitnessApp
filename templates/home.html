@@ -87,13 +87,15 @@
         <a class="btn btn-primary" style href="{% url 'workouts' %}">Add a Workout!</a>
         </div>
       </div>
+
       <div >
         <h1 class="text-center" >Goal Achivement </h1>
         <a href="{% url 'users:profile' %}">
         <div class="chart-container">
           <canvas id="AchivementChart" width="400" height="400">
           </canvas>
-        </div></a>
+        </div>
+        </a>
 
         <div style=" box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;display: flex; flex-direction: column; align-items: center;background-color:#afafe7; margin-top:10px; padding:3px; border-radius:8px;">
       {% if selected_goal.is_deadline_expired and not selected_goal.is_completed %}
@@ -110,10 +112,15 @@
            <p style="font-size:30px;">Completed!</p>
            <a class="btn btn-primary" href="{% url 'listaobiettivi' %}"> Choose another goal! </a>
            {% else %}
+            {% if selected_goal %}
             <p style="font-size:30px;">In Progress... </p>
             <p>Days: {{remain_days }}</p>
             <p>Deadline: {{ deadline }}</p>
             <p>Goal: {{ cal_goal }} Cal </p>
+            {% else %}
+            <p style="font-size:30px;">No Goal Selected </p>
+            <a class="btn btn-primary" href="{% url 'listaobiettivi' %}"> Choose a Goal! </a>
+            {% endif %}
            {% endif %}
           {% endif %}
           {% endif %}
@@ -207,8 +214,8 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      var burned = {{ cal_burned }};
-      var goal = {{ cal_goal }};
+      var burned = {{ cal_burned }}
+      var goal = {{ cal_goal }}
       var progress = (burned / goal) * 100;
       if (progress > 100) {
         progress = 100;
@@ -237,9 +244,9 @@
 
  <script>
    document.addEventListener("DOMContentLoaded",function(){
-     var completed = {{ completed }};
-     var remaining = {{ remaining }};
-     var expired = {{ expired }};
+     var completed = {{ completed }}
+     var remaining = {{ remaining }}
+     var expired = {{ expired }}
         var ctx = document.getElementById("CompletedChart").getContext("2d");
         var CompletedChart = new Chart(ctx, {
           type: "doughnut",
@@ -274,8 +281,8 @@
 
   function drawChart() {
 
-    var dates = {{ dates|safe }};
-    var counts = {{ counts|safe }};
+    var dates = {{ dates|safe }}
+    var counts = {{ counts|safe }}
 
 
     var data = new google.visualization.DataTable();

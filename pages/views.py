@@ -43,4 +43,4 @@ def home(request):
         days = (deadline - goal.data_creazione).days
         return render(request, 'home.html', {'remain_days':days,'selected_goal':goal,'workout_types': workout_types, 'dates': dates, 'counts': counts,'cal_burned':cal_burned,'cal_goal':cal_goal,'is_completed':goal.is_completed,'completed':completed,'remaining':to_complete ,'deadline':deadline,'all_goals':all_goals,'expired':expired})
     else:
-        return render(request, 'home.html', {'workout_types': workout_types, 'dates': dates, 'counts': counts,'completed':completed,'remaining':to_complete,'all_goals':all_goals })
+        return render(request, 'home.html', {'selected_goal':goal,'workout_types': workout_types, 'dates': dates, 'counts': counts,'completed':completed,'remaining':to_complete,'all_goals':all_goals,'expired':expired})
